@@ -50,12 +50,21 @@ It is necessary to use the free twitter APIv2.
 
 Steps:
 
-- create an app on your first log in developer.twitter.com
-- Once you are in your dashboard, go to 'Projects & App' > YOUR_PROJECT
-![image](https://user-images.githubusercontent.com/40497633/173073516-15390f60-e63d-4e1a-b431-a135c63a56b2.png)
-- Go to 'Keys and tokens'
-![image](https://user-images.githubusercontent.com/40497633/173073920-b07666e1-2f79-4db0-bf30-2788ff2dada3.png)
-- Finally, generate your access keys and tokens
+- create an app on your first log in developer.twitter.com.
+- Once you are in your dashboard, go to 'Projects & App' > YOUR_PROJECT.
 
+![image](https://user-images.githubusercontent.com/40497633/173073516-15390f60-e63d-4e1a-b431-a135c63a56b2.png)
+- Go to 'Keys and tokens'.
+
+![image](https://user-images.githubusercontent.com/40497633/173073920-b07666e1-2f79-4db0-bf30-2788ff2dada3.png)
+- Finally, generate your access keys and tokens > add them to your environment variables.
+
+## Some screens
+
+![tempsnip](https://user-images.githubusercontent.com/40497633/173075972-083ee916-e1a6-485f-b339-5775ffded5d1.png)
+
+![tempsnip](https://user-images.githubusercontent.com/40497633/173076312-3e46ea75-abe1-41c8-b55c-24f90c4d0e99.png)
+
+![tempsnip](https://user-images.githubusercontent.com/40497633/173076890-4e4fa858-38b9-4c6f-98d3-79cb73006618.png)
 
 
