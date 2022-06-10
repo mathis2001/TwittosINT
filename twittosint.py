@@ -25,12 +25,13 @@ class bcolors:
 	INFO = '\033[94m'
 
 def help():
-	print(bcolors.INFO+"[*] "+bcolors.RESET+"usage: ./twittosint.py [-h] -u username [-ht]")
+	print(bcolors.INFO+"[*] "+bcolors.RESET+"usage: ./twittosint.py [-h] -u username [-ht] [-p]")
 	print(bcolors.INFO+"[*] "+bcolors.RESET+"usage: ./twittosint.py [-h] -c username1/username2")
 	print('''
   Options
   -------------------------------------------
 	-u   target username
+	-p   profile informations
 	-ht  hashtags used by the target
 	-c   followers and following comparison
   -------------------------------------------
