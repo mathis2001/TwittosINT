@@ -49,6 +49,28 @@ def getopts(argv):
 		argv = argv[1:] 
 	return opts
 
+def profile(username):
+	description = client.get_users(usernames=username, user_fields=['description','created_at','location','url','profile_image_url'])
+	for user in description.data:
+		print(f'''
+  Profile
+-----------------------------------------------
+
+username: {user.username}	
+
+avatar: 
+{user.profile_image_url}
+ 
+biography: 
+{user.description}
+	
+location: {user.location}
+	
+website: {user.url}
+
+account created at: {user.created_at}
+		''')
+
 def hashtags(username):
 	user=client.get_user(username=username)
 	userID=user.data.id
@@ -137,6 +159,8 @@ def main():
 		username=myargs['-u']
 		if '-ht' in argv:
 			hashtags(username)
+		if '-p' in argv:
+			profile(username)
 
 
 if __name__ == '__main__':
