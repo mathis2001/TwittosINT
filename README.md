@@ -23,7 +23,7 @@ $ pip3 install tweepy
 
 ## Usage:
 ```bash
-hashtags: ./twittosint.py [-h] -u username [-ht]
+hashtags/profiler: ./twittosint.py [-h] -u username [-ht] [-p]
 network comparison: ./twittosint.py [-h] -c username1/username2
 
 ```
@@ -31,7 +31,8 @@ network comparison: ./twittosint.py [-h] -c username1/username2
 ```bash
 Options
   -------------------------------------------
-	-u   target username
+	-u   target username2
+	-p   profile information
 	-ht  hashtags used by the target
 	-c   followers and following comparison
   -------------------------------------------
