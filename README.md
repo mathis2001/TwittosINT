@@ -63,6 +63,8 @@ Steps:
 
 ## Some screens
 
+![image](https://user-images.githubusercontent.com/40497633/173357103-c8c4f03c-a5c1-4159-b91a-6adcc23c6124.png)
+
 ![tempsnip](https://user-images.githubusercontent.com/40497633/173075972-083ee916-e1a6-485f-b339-5775ffded5d1.png)
 
 ![tempsnip](https://user-images.githubusercontent.com/40497633/173076312-3e46ea75-abe1-41c8-b55c-24f90c4d0e99.png)
