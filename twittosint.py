@@ -245,6 +245,7 @@ def main():
 
 if __name__ == '__main__':
 	try:
+		banner()
 		main()
 	except Exception as e:
 		print(bcolors.FAIL+"[!] "+bcolors.RESET+"A problem has occured.")
