@@ -1,6 +1,7 @@
 import sys
 from sys import argv
 import os
+from collections import Counter
 import tweepy
 
 CONSUMER_KEY=os.getenv('CONSUMER_KEY')
@@ -25,15 +26,16 @@ class bcolors:
 	INFO = '\033[94m'
 
 def help():
-	print(bcolors.INFO+"[*] "+bcolors.RESET+"usage: ./twittosint.py [-h] -u username [-ht] [-p]")
+	print(bcolors.INFO+"[*] "+bcolors.RESET+"usage: ./twittosint.py [-h] -u username [-p] [-ht] [-m]")
 	print(bcolors.INFO+"[*] "+bcolors.RESET+"usage: ./twittosint.py [-h] -c username1/username2")
 	print('''
   Options
   -------------------------------------------
 	-u   target username
-	-p   profile informations
 	-ht  hashtags used by the target
 	-c   followers and following comparison
+	-p   profile information
+	-m   check for mentions
   -------------------------------------------
 	''')
 
@@ -79,15 +81,50 @@ def hashtags(username):
 
 	tweets = client.get_users_tweets(userID, max_results=100)
 	hashtag_list=[]
-	for tweet in tweets.data:
-		string=tweet.text
-		for word in string.split():
-			if word[0] == '#':
-				hashtag_list.append(word[0:])
-	print(bcolors.INFO+"[*] "+username+bcolors.RESET+" is interested in:")
-	for hashtag in hashtag_list:
-		print(hashtag)
-		
+	ht_list=[]
+	if not tweets.data:
+		print(bcolors.FAIL+"[!] "+bcolors.RESET+"No recent tweet found.")
+	else:		
+		for tweet in tweets.data:
+			string=tweet.text
+			for word in string.split():
+				if word[0] == '#':
+					hashtag_list.append(word[0:])
+		print(bcolors.INFO+"[*] "+username+bcolors.RESET+" is interested in:")
+		if not hashtag_list:
+			print(bcolors.FAIL+"[!] "+"Target didn't recently use hashtag.")
+		else:	
+			for hashtag in hashtag_list:
+				if hashtag not in ht_list:
+					ht_list.append(hashtag)
+			for ht in ht_list:
+				print(ht)
+def mention(username):
+	user=client.get_user(username=username)
+	userID=user.data.id
+	print(bcolors.INFO+"[*] "+bcolors.RESET+"The twitter ID of "+bcolors.INFO+username+bcolors.RESET+" is "+str(userID))
+
+	tweets = client.get_users_tweets(userID, max_results=100)
+	mention_list=[]
+	contact_list=[]
+	if not tweets.data:
+		print(bcolors.FAIL+"[!] "+bcolors.RESET+"No recent tweet found.")
+	else:
+		for tweet in tweets.data:
+			string=tweet.text
+			for word in string.split():
+				if word[0] == '@':
+					mention_list.append(word[0:])
+		print(bcolors.INFO+"[*] "+username+bcolors.RESET+"'s mentions:\n")
+		if not mention_list:
+			print(bcolors.FAIL+"[!] "+bcolors.RESET+"No recent mention found.")
+		else:
+			occurence=Counter(mention_list)
+			ordered=sorted(occurence.items(), key=lambda t: t[1], reverse=True)
+			result=dict(ordered)
+			for key, value in result.items():
+				print(bcolors.OK+"[+] "+bcolors.RESET+key+" with "+str(value)+" mention(s)")
+	
 def InCommon(first_username, second_username):
 	user1=client.get_user(username=first_username)
 	user2=client.get_user(username=second_username)
@@ -162,6 +199,11 @@ def main():
 			hashtags(username)
 		if '-p' in argv:
 			profile(username)
+		if '-m' in argv:
+			mention(username)
+	else:
+		print(bcolors.FAIL+"[!] "+bcolors.RESET+"No such option.")
+		help()
 
 
 if __name__ == '__main__':
@@ -172,4 +214,4 @@ if __name__ == '__main__':
 		print(bcolors.INFO+"[*] "+bcolors.RESET+"Error info:")
 		print(e)
 	except KeyboardInterrupt:
-        	print(bcolors.FAIL+"[!] "+bcolors.RESET+"Script canceled.")
+	       	print(bcolors.FAIL+"[!] "+bcolors.RESET+"Script canceled.")
