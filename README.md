@@ -23,7 +23,7 @@ $ pip3 install tweepy
 
 ## Usage:
 ```bash
-hashtags/profiler: ./twittosint.py [-h] -u username [-ht] [-p] [-m]
+hashtags/profiler: ./twittosint.py [-h] -u username [-ht] [-p] [-m] [-f] [-l limit]
 network comparison: ./twittosint.py [-h] -c username1/username2
 
 ```
@@ -36,6 +36,8 @@ Options
 	-ht  hashtags used by the target
 	-c   followers and following comparison
 	-m   check for mentions (occurence)
+	-f   print followers details
+	-l   limit
   -------------------------------------------
 
   Config 
@@ -74,3 +76,6 @@ Steps:
 ![tempsnip](https://user-images.githubusercontent.com/40497633/173352166-1bc1b27e-77f5-4a1d-aa4c-d64059da3bd2.png)
 
 ![image](https://user-images.githubusercontent.com/40497633/173357906-81c37cd0-ae85-47a2-91c4-1612937ed394.png)
+
+![image](https://user-images.githubusercontent.com/40497633/174047399-76163f57-9392-49ac-8110-bc7772d1c560.png)
+
