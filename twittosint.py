@@ -204,6 +204,8 @@ def followers(username):
 
 	userID=user.data.id
 	print(bcolors.INFO+"[*] "+bcolors.RESET+"The twitter ID of "+bcolors.INFO+username+bcolors.RESET+" is "+str(userID))
+	print(bcolors.INFO+"[*] "+bcolors.RESET+"Processing your request...")
+	print(bcolors.INFO+"[*] "+bcolors.RESET+"It may take more or less time depending on the set limit.")
 	if args.limit:
 		limit = args.limit
 	else:
