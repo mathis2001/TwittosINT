@@ -4,6 +4,7 @@ import os
 import re
 from collections import Counter
 from prettytable import PrettyTable
+import argparse
 import tweepy
 
 CONSUMER_KEY=os.getenv('CONSUMER_KEY')
@@ -12,13 +13,22 @@ ACCESS_TOKEN=os.getenv('ACCESS_TOKEN')
 ACCESS_TOKEN_SECRET=os.getenv('ACCESS_TOKEN_SECRET')
 BEARER_TOKEN=os.getenv('BEARER_TOKEN')
 
-
 client = tweepy.Client( consumer_key=CONSUMER_KEY, 
                         consumer_secret=CONSUMER_SECRET,
                         access_token=ACCESS_TOKEN,
                         access_token_secret=ACCESS_TOKEN_SECRET,
                         bearer_token=BEARER_TOKEN,
                         wait_on_rate_limit=True)
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-u", "--username", help="target username", type=str)
+parser.add_argument("-p", "--profile-information", help="Get profile information of a user", action="store_true")
+parser.add_argument("-ht", "--hashtag", help="Get user recently used hashtags", action="store_true")
+parser.add_argument("-c", "--comparison", help="Compare users network", type=str)
+parser.add_argument("-m", "--mentions", help="Get people the user has mentioned the most", action="store_true")
+parser.add_argument("-f", "--followers", help="Get user followers details", action="store_true")
+parser.add_argument("-l", "--limit", help="Number of results wanted", type=str)
+args = parser.parse_args()
 
 class bcolors:
 	OK = '\033[92m'
@@ -64,34 +74,6 @@ def banner():
 
 	''')
 
-def help():
-	print(bcolors.INFO+"[*] "+bcolors.RESET+"usage: ./twittosint.py [-h] -u username [-p] [-ht] [-m] [-f] [-l]")
-	print(bcolors.INFO+"[*] "+bcolors.RESET+"usage: ./twittosint.py [-h] -c username1/username2")
-	print('''
-  Options
-  -------------------------------------------
-	-u   target username
-	-ht  hashtags used by the target
-	-c   followers and following comparison
-	-p   profile information
-	-m   check for mentions
-	-f   print followers details
-	-l   limit
-  -------------------------------------------
-	''')
-
-def getopts(argv):
-	opts = {}  
-	while argv:
-		try:
-			if argv[0][0] == '-':
-				opts[argv[0]] = argv[1] 
-		except:
-			if argv[0] == '-h':
-				help()
-				exit(0)
-		argv = argv[1:] 
-	return opts
 
 def profile(username):
 	description = client.get_users(usernames=username, user_fields=['description','created_at','location','url','profile_image_url'])
@@ -218,13 +200,12 @@ def InCommon(first_username, second_username):
 	print("\n"+bcolors.INFO+"[*] "+first_username+bcolors.RESET+" and "+bcolors.INFO+second_username+bcolors.RESET+" have "+str(flw_count)+" follows and "+str(flwr_count)+" followers in common")
 
 def followers(username):
-	myargs = getopts(argv)
 	user=client.get_user(username=username)
 
 	userID=user.data.id
 	print(bcolors.INFO+"[*] "+bcolors.RESET+"The twitter ID of "+bcolors.INFO+username+bcolors.RESET+" is "+str(userID))
-	if '-l' in myargs:
-		limit = myargs['-l']
+	if args.limit:
+		limit = args.limit
 	else:
 		limit=1000
 	followers = client.get_users_followers(userID, max_results=limit)
@@ -245,14 +226,9 @@ def followers(username):
 		print(e)
 	
 def main():
-	myargs = getopts(argv)
-	if len(sys.argv) < 2:
-		print(bcolors.FAIL+"[!] "+bcolors.RESET+"No option given.")
-		help()
-		exit(0)
-	elif '-c' in myargs:
+	if args.comparison:
 		try:
-			usernames=myargs['-c'].split("/")
+			usernames=args.comparison.split("/")
 			u1 = usernames[0]
 			u2 = usernames[1]
 			InCommon(u1,u2)
@@ -261,20 +237,16 @@ def main():
 			help()
 			exit(0)
 
-	elif '-u' in myargs:
-		username=myargs['-u']
-		if '-ht' in argv:
+	if args.username:
+		username=args.username
+		if args.hashtag:
 			hashtags(username)
-		if '-p' in argv:
+		if args.profile_information:
 			profile(username)
-		if '-m' in argv:
+		if args.mentions:
 			mention(username)
-		if '-f' in argv:
+		if args.followers:
 			followers(username)
-	else:
-		print(bcolors.FAIL+"[!] "+bcolors.RESET+"No such option.")
-		help()
-
 
 if __name__ == '__main__':
 	try:
