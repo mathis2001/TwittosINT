@@ -77,5 +77,5 @@ Steps:
 
 ![image](https://user-images.githubusercontent.com/40497633/173357906-81c37cd0-ae85-47a2-91c4-1612937ed394.png)
 
-![image](https://user-images.githubusercontent.com/40497633/174047574-a171e4f2-b166-4a10-899f-fdc8f6251cb2.png)
+![tempsnip](https://user-images.githubusercontent.com/40497633/174047863-0c796f9f-4199-476b-8e37-0cf5740c529f.png)
 
