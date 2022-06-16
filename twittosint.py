@@ -65,7 +65,7 @@ def banner():
 	''')
 
 def help():
-	print(bcolors.INFO+"[*] "+bcolors.RESET+"usage: ./twittosint.py [-h] -u username [-p] [-ht] [-m]")
+	print(bcolors.INFO+"[*] "+bcolors.RESET+"usage: ./twittosint.py [-h] -u username [-p] [-ht] [-m] [-f] [-l]")
 	print(bcolors.INFO+"[*] "+bcolors.RESET+"usage: ./twittosint.py [-h] -c username1/username2")
 	print('''
   Options
@@ -75,6 +75,8 @@ def help():
 	-c   followers and following comparison
 	-p   profile information
 	-m   check for mentions
+	-f   print followers details
+	-l   limit
   -------------------------------------------
 	''')
 
