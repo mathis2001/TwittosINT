@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
-
 import sys
 from sys import argv
 import os
+import re
 from collections import Counter
+from prettytable import PrettyTable
 import tweepy
 
 CONSUMER_KEY=os.getenv('CONSUMER_KEY')
@@ -19,6 +19,13 @@ client = tweepy.Client( consumer_key=CONSUMER_KEY,
                         access_token_secret=ACCESS_TOKEN_SECRET,
                         bearer_token=BEARER_TOKEN,
                         wait_on_rate_limit=True)
+
+class bcolors:
+	OK = '\033[92m'
+	WARNING = '\033[93m'
+	FAIL = '\033[91m'
+	RESET = '\033[0m'
+	INFO = '\033[94m'
 
 def banner():
 	print('''
@@ -44,10 +51,10 @@ def banner():
                   / / _.   '.   .':      /        '
                   ~(_/ .   /    _  `  .-<_
                     /_/ . ' .-~" `.  / \  \          ,z=.
-                    ~( /   '  :   | K   "-.~-.______//TwittosINT
+                    ~( /   '  :   | K   "-.~-.______//TwittOSINT
                       "-,.    l   I/ \_    __{--->._(==.
                        //(     \  <    ~"~"     //
-                      /' /\     \  \     ,v=.  (( by S1rN3tZ  
+                      /' /\     \  \     ,v=.  (( by S1rN3tZ
                     .^. / /\     "  }__ //===-  `
                    / / ' '  "-.,__ {---(==-
                  .^ '       :  T  ~"   ll
@@ -56,13 +63,6 @@ def banner():
                  ~-<_(_.^-~"
 
 	''')
-
-class bcolors:
-	OK = '\033[92m'
-	WARNING = '\033[93m'
-	FAIL = '\033[91m'
-	RESET = '\033[0m'
-	INFO = '\033[94m'
 
 def help():
 	print(bcolors.INFO+"[*] "+bcolors.RESET+"usage: ./twittosint.py [-h] -u username [-p] [-ht] [-m]")
@@ -215,6 +215,33 @@ def InCommon(first_username, second_username):
 			print(flwr)
 	print("\n"+bcolors.INFO+"[*] "+first_username+bcolors.RESET+" and "+bcolors.INFO+second_username+bcolors.RESET+" have "+str(flw_count)+" follows and "+str(flwr_count)+" followers in common")
 
+def followers(username):
+	myargs = getopts(argv)
+	user=client.get_user(username=username)
+
+	userID=user.data.id
+	print(bcolors.INFO+"[*] "+bcolors.RESET+"The twitter ID of "+bcolors.INFO+username+bcolors.RESET+" is "+str(userID))
+	if '-l' in myargs:
+		limit = myargs['-l']
+	else:
+		limit=1000
+	followers = client.get_users_followers(userID, max_results=limit)
+	regex = r"\W([\w\-\.]+@[\w\-\.]+)+\W"
+	
+	t=PrettyTable(['Follower', 'Email', 'Location'])
+
+	try:
+		for follower in followers.data:
+			infos = client.get_users(usernames=follower.username, user_fields=['description','location'])
+			for user in infos.data:
+				match = re.findall(regex,str(user.description))
+				if not match:
+					match=bcolors.FAIL+"None"+bcolors.RESET
+				t.add_row([follower.username,str(match),user.location])
+		print(t)
+	except Exception as e:
+		print(e)
+	
 def main():
 	myargs = getopts(argv)
 	if len(sys.argv) < 2:
@@ -240,6 +267,8 @@ def main():
 			profile(username)
 		if '-m' in argv:
 			mention(username)
+		if '-f' in argv:
+			followers(username)
 	else:
 		print(bcolors.FAIL+"[!] "+bcolors.RESET+"No such option.")
 		help()
