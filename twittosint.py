@@ -14,12 +14,7 @@ ACCESS_TOKEN=os.getenv('ACCESS_TOKEN')
 ACCESS_TOKEN_SECRET=os.getenv('ACCESS_TOKEN_SECRET')
 BEARER_TOKEN=os.getenv('BEARER_TOKEN')
 
-client = tweepy.Client( consumer_key=CONSUMER_KEY, 
-                        consumer_secret=CONSUMER_SECRET,
-                        access_token=ACCESS_TOKEN,
-                        access_token_secret=ACCESS_TOKEN_SECRET,
-                        bearer_token=BEARER_TOKEN,
-                        wait_on_rate_limit=True)
+client = tweepy.Client(consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET, access_token=ACCESS_TOKEN, access_token_secret=ACCESS_TOKEN_SECRET, bearer_token=BEARER_TOKEN, wait_on_rate_limit=True)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-u", "--username", help="target username", type=str)
